@@ -1,0 +1,5 @@
+phonenumbers
+pycountry
+requests
+telethon
+asyncio
