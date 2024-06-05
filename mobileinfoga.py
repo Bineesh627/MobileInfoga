@@ -82,16 +82,13 @@ class OsintNumber:
         bot = TelethonBot()
         bot.message = self.formatted_number
         bot.run()
-        return bot.process_data()
-        
+
     def output(self):
         print()
         sleep(0.1)
         print(f"[!] Fetching Phone Number  : {self.formatted_number}")
         sleep(0.1)
         print(f"[+] Valid                  : {self.valid}")
-        sleep(0.1)
-        print(self.run_telegram_bot())
         sleep(0.1)
         print(f"[+] Country Prefix         : +{self.country_prefix}")
         sleep(0.1)
@@ -121,6 +118,7 @@ if __name__ == "__main__":
     if program.validate_phone_number(number):
         # Assuming the country code is +1 for US
         program.formatted_number = "+" + number
+        program.run_telegram_bot()
         program.grab_data()
         program.output()
     else:

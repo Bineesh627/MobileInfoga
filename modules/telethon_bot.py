@@ -1,6 +1,7 @@
 from telethon import events, sync
+from modules.extract_data import DataConverter
 from telethon.tl.types import InputPeerUser
-from config import API_HASH, API_ID, PHONE
+from modules.config import API_HASH, API_ID, PHONE
 import asyncio
 import json
 import re
@@ -9,10 +10,12 @@ import os
 class TelethonBot:
     def __init__(self):
         self.client = None
-        self.username = '@TrueCaller_Z_Bot'
+        self.username = '@TrueCaller1Bot'
         self.user_entity = None
+        self.message = None
 
     def authenticate(self):
+        os.makedirs('session', exist_ok=True)
         self.client = sync.TelegramClient('session/session', API_ID, API_HASH)
         self.client.connect()
         if not self.client.is_user_authorized():
@@ -38,36 +41,10 @@ class TelethonBot:
         unknown_name_found = False  # Initialize the variable here
         if event.is_reply:
             message_text = event.message.text
-            message_text = re.sub(r'[*`\ufe0f]', '', message_text)
-            lines = message_text.split('\n')  # Define lines here
-        for line in lines:
-            line = line.strip()
-
-            elif line.startswith('Name:') and not unknown_name_found:
-                extracted_data['name'] = line.split(':')[1].strip()
-            elif line.startswith('🔍 Unknown Says:'):
-                extracted_data['unknown'] = {}
-                unknown_name_found = True
-            elif line.startswith('Name:') and unknown_name_found:
-                extracted_data['unknown']['name'] = line.split(':')[1].strip()
-            client.disconnect()
-
-        # This is the JSON file path to store the response from the Truecaller data.
-        FILE_PATH = 'output/response.json'
-        # Check if the file exists
-        if os.path.exists(FILE_PATH):
-            # Read existing JSON data from the file
-            with open(FILE_PATH, 'r') as file:
-                existing_data = json.load(file)
-            # Update existing data with new data
-            existing_data.append(extracted_data)
-        else:
-            existing_data = [extracted_data]  # Create a new list if the file doesn't exist
-
-        # Write the updated JSON data back to the file
-        with open(FILE_PATH, 'w') as file:
-            json.dump(existing_data, file, indent=4)
-
+            converter = DataConverter(message_text)
+            os.makedirs('output', exist_ok=True)
+            converter.process('output/output.json')
+            print(converter.convert_to_json())
         self.client.disconnect()
 
     def run(self):

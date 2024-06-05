@@ -1,5 +1,6 @@
-phonenumbers
-pycountry
-requests
 telethon
 asyncio
+json
+sys
+re
+os
