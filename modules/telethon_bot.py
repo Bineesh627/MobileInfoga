@@ -2,9 +2,6 @@ from telethon import events, sync
 from modules.extract_data import DataConverter
 from telethon.tl.types import InputPeerUser
 from modules.config import API_HASH, API_ID, PHONE
-import asyncio
-import json
-import re
 import os
 
 class TelethonBot:
@@ -13,6 +10,7 @@ class TelethonBot:
         self.username = '@TrueCaller1Bot'
         self.user_entity = None
         self.message = None
+        self.message_text = None
 
     def authenticate(self):
         os.makedirs('session', exist_ok=True)
@@ -37,14 +35,8 @@ class TelethonBot:
         self.client.run_until_disconnected()
 
     async def extract_data(self, event):
-        extracted_data = {}
-        unknown_name_found = False  # Initialize the variable here
         if event.is_reply:
-            message_text = event.message.text
-            converter = DataConverter(message_text)
-            os.makedirs('output', exist_ok=True)
-            converter.process('output/output.json')
-            print(converter.convert_to_json())
+            self.message_text = event.message.text
         self.client.disconnect()
 
     def run(self):

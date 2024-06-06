@@ -1,7 +1,9 @@
 import phonenumbers
 from time import sleep
-from modules.telethon_bot import TelethonBot
+# from modules.telethon_bot import TelethonBot
+from modules.extract_data import DataConverter
 from phonenumbers import carrier, geocoder, timezone
+import os
 
 class OsintNumber:
     def __init__(self):
@@ -31,11 +33,6 @@ class OsintNumber:
             return False
 
         return True
-
-        # Check if the number is valid
-        if not phonenumbers.is_valid_number(parsed_number):
-            print("Invalid phone number.")
-            return
 
     def get_line_type(self):
         parsed_number = phonenumbers.parse(self.formatted_number)
@@ -79,9 +76,11 @@ class OsintNumber:
         self.local_format = self.phone_number.national_number
     
     def run_telegram_bot(self):
-        bot = TelethonBot()
-        bot.message = self.formatted_number
-        bot.run()
+        converter = DataConverter()
+        converter.bot_process(self.formatted_number)
+        os.makedirs('output', exist_ok=True)
+        converter.process('output/output.json')
+        print(converter.convert_to_json())
 
     def output(self):
         print()

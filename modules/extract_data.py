@@ -1,9 +1,10 @@
+from modules.telethon_bot import TelethonBot
 import json
 import re
 
 class DataConverter:
-    def __init__(self, text_data):
-        self.lines = text_data.split('\n')
+    def __init__(self):
+        self.lines = self.text_data.split('\n')
         self.data = {
             "Number": "",
             "Country": "",
@@ -56,6 +57,12 @@ class DataConverter:
         json_data = self.convert_to_json()
         with open(output_file, 'w') as json_file:
             json_file.write(json_data)
+
+    def bot_process(self, number):
+        bot = TelethonBot()
+        bot.message = number
+        bot.run()
+        self.text_data = bot.message_text
 
     def process(self, output_file):
         self.parse_lines()
