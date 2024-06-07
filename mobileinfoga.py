@@ -60,7 +60,7 @@ class DataConverter:
     def process(self):
         self.parse_lines()
         return self.convert_to_json()
-        
+
 class TelethonBot:
     def __init__(self):
         self.client = None
@@ -110,7 +110,7 @@ class TelethonBot:
         finally:
             if self.client:
                 self.client.disconnect()
-                
+
 class OsintNumber:
     def __init__(self):
         self.formatted_number = None
@@ -138,7 +138,7 @@ class OsintNumber:
     def get_line_type(self):
         parsed_number = phonenumbers.parse(self.formatted_number)
         number_type = phonenumbers.number_type(parsed_number)
-    
+
         if number_type == phonenumbers.PhoneNumberType.FIXED_LINE:
             return "Fixed Line"
         elif number_type == phonenumbers.PhoneNumberType.MOBILE:
@@ -161,7 +161,7 @@ class OsintNumber:
             return "Universal Access Number"
         else:
             return "Unknown"
-        
+
     def grab_data(self):
         try:
             self.phone_number = phonenumbers.parse(self.formatted_number)
@@ -194,10 +194,10 @@ class OsintNumber:
             "country_name": self.country_name,
             "location": self.location
         }
-        
+
         json_output = json.dumps(data, indent=4)
         return json_output
-        
+
 def Formating_data(osintData, telegramData):
     try:
         if isinstance(telegramData, str):
@@ -219,6 +219,7 @@ def Formating_data(osintData, telegramData):
         international_format = osintData['international_format']
         national_format = osintData['national_format']
         line_type = osintData['line_type']
+        time_zone = osintData['time_zone']
         carrier = osintData['carrier']
         location = telegramData.get('TrueCaller', {}).get('Location')
         whatsapp = telegramData.get('WhatsApp')
@@ -235,6 +236,7 @@ def Formating_data(osintData, telegramData):
         print("International Format : ", international_format)
         print("National Format      : ", national_format)
         print("Line Type            : ", line_type)
+        print("Time Zone            : ", time_zone)
         print("Carrier              : ", carrier)
         print("Location             : ", location)
         print("WhatsApp Link        : ", whatsapp)
@@ -246,11 +248,11 @@ def Formating_data(osintData, telegramData):
         print(f"Type error: {e}")
     except ValueError as e:
         print(f"Value error: {e}")
-    
+
 def convert_data(text_data):
     converter = DataConverter(text_data)
     return converter.process()
-       
+
 def run_telegram_bot(number):
     bot = TelethonBot()
     bot.message = number
@@ -258,7 +260,7 @@ def run_telegram_bot(number):
     text_data = bot.message_text
     convert = convert_data(text_data)
     return convert
-    
+
 def main():
     program = OsintNumber()
     number = input("Enter the number with country code (e.g., +1234567890): ").strip()

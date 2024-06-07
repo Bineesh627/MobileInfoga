@@ -21,20 +21,23 @@ python mobileinfoga.py
 Output:
 
 ```
-[!] Fetching Phone Number: +911234567890 
-[+] Valid: True 
-[+] Truecaller Name: hello 
-[+] Leaked Name: Hello 
-[+] Country Prefix: +91 
-[+] Country Code: IN 
-[+] Local Format: 1234567890 
-[+] International Format: +91 1234567890 
-[+] National Format: 0123456789 
-[+] Line Type: Mobile 
-[+] Time Zone: ('Asia/Calcutta',) 
-[+] Carrier: Airtel 
-[+] Country Name: India 
-[+] Location: India
+Enter the number with country code (e.g., +1234567890): +911234567890
+Fetcing Phone Number :  +911234567890
+valid                :  True
+Truecaller Name      :  John 
+Leaked Name          :  John
+Leaked Name          :  John S
+Country Prefix       :  +91
+Country Code         :  IN
+Local Format         :  1234567890
+International Format :  +91 1234 567890
+National Format      :  01234567890
+Line Type            :  Mobile
+Time Zone            :  ['Asia/Calcutta']
+Carrier              :  Airtel
+Location             :  Kerala
+WhatsApp Link        :  https://wa.me/910123456789
+Telegram Link        :  https://t.me/+910123456789
 ```
 
 ## Installation
