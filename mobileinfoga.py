@@ -4,9 +4,7 @@ from config import API_HASH, API_ID, PHONE
 import os
 import json
 import re
-import asyncio
 import phonenumbers
-from time import sleep
 from phonenumbers import carrier, geocoder, timezone
 
 class DataConverter:
@@ -202,10 +200,13 @@ class OsintNumber:
         
 def Formating_data(osintData, telegramData):
     try:
-        if isinstance(osintData, telegramData, str):
+        if isinstance(telegramData, str):
             telegramData = json.loads(telegramData)
+        if isinstance(osintData, str):
             osintData = json.loads(osintData)
-        if not isinstance(osintData, telegramData, dict):
+        if not isinstance(telegramData, dict):
+            raise ValueError("telegramData must be a dictionary after parsing JSON.")
+        if not isinstance(osintData, dict):
             raise ValueError("osintData must be a dictionary after parsing JSON.")
         fetching_number = osintData['fetching_number']
         valid = osintData['valid']
@@ -222,28 +223,29 @@ def Formating_data(osintData, telegramData):
         location = telegramData.get('TrueCaller', {}).get('Location')
         whatsapp = telegramData.get('WhatsApp')
         telegram = telegramData.get('Telegram')
+
+        print("Fetcing Phone Number : ", fetching_number)
+        print("valid                : ", valid)
+        print("Truecaller Name      : ", truecallerName)
+        print("Leaked Name          : ", leaked_data1)
+        print("Leaked Name          : ", leaked_data2)
+        print("Country Prefix       : ", country_prefix)
+        print("Country Code         : ", country_code)
+        print("Local Format         : ", local_format)
+        print("International Format : ", international_format)
+        print("National Format      : ", national_format)
+        print("Line Type            : ", line_type)
+        print("Carrier              : ", carrier)
+        print("Location             : ", location)
+        print("WhatsApp Link        : ", whatsapp)
+        print("Telegram Link        : ", telegram)
+
     except json.JSONDecodeError as e:
         print(f"Key error: {e}")
     except KeyError as e:
         print(f"Type error: {e}")
     except ValueError as e:
         print(f"Value error: {e}")
-    
-    print("Fetcing Phone Number : ", fetching_number)
-    print("valid                : ", valid)
-    print("Truecaller Name      : ", truecallerName)
-    print("Leaked Name          : ", leaked_data1)
-    print("Leaked Name          : ", leaked_data2)
-    print("Country Prefix       : ", country_prefix)
-    print("Country Code         : ", country_code)
-    print("Local Format         : ", local_format)
-    print("International Format : ", international_format)
-    print("National Format      : ", national_format)
-    print("Line Type            : ", line_type)
-    print("Carrier              : ", carrier)
-    print("Location             : ", location)
-    print("WhatsApp Link        : ", whatsapp)
-    print("Telegram Link        : ", telegram)
     
 def convert_data(text_data):
     converter = DataConverter(text_data)
