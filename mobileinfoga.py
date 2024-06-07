@@ -183,26 +183,67 @@ class OsintNumber:
 
     def output(self):
         data = {
-            "Fetching Phone Number": self.formatted_number,
-            "Valid": self.valid,
-            "Country Prefix": f"+{self.country_prefix}",
-            "Country Code": self.country_code,
-            "Local Format": self.local_format,
-            "International Format": self.phone_number_international,
-            "National Format": self.phone_number_national,
-            "Line Type": self.get_line_type(),
-            "Time Zone": self.time_zone,
-            "Carrier": self.carrier,
-            "Country Name": self.country_name,
-            "Location": self.location
+            "fetching_number": self.formatted_number,
+            "valid": self.valid,
+            "country_prefix": f"+{self.country_prefix}",
+            "country_code": self.country_code,
+            "local_format": self.local_format,
+            "international_format": self.phone_number_international,
+            "national_format": self.phone_number_national,
+            "line_type": self.get_line_type(),
+            "time_zone": self.time_zone,
+            "carrier": self.carrier,
+            "country_name": self.country_name,
+            "location": self.location
         }
         
         json_output = json.dumps(data, indent=4)
         return json_output
         
 def Formating_data(osintData, telegramData):
-    print(osintData)
-    print(telegramData)
+    try:
+        if isinstance(osintData, telegramData, str):
+            telegramData = json.loads(telegramData)
+            osintData = json.loads(osintData)
+        if not isinstance(osintData, telegramData, dict):
+            raise ValueError("osintData must be a dictionary after parsing JSON.")
+        fetching_number = osintData['fetching_number']
+        valid = osintData['valid']
+        truecallerName = telegramData.get('TrueCaller', {}).get('Name')
+        leaked_data1 = telegramData.get('Unknown', {}).get('Name')
+        leaked_data2 = telegramData.get('Unknown2', {}).get('Name')
+        country_prefix = osintData['country_prefix']
+        country_code = osintData['country_code']
+        local_format = osintData['local_format']
+        international_format = osintData['international_format']
+        national_format = osintData['national_format']
+        line_type = osintData['line_type']
+        carrier = osintData['carrier']
+        location = telegramData.get('TrueCaller', {}).get('Location')
+        whatsapp = telegramData.get('WhatsApp')
+        telegram = telegramData.get('Telegram')
+    except json.JSONDecodeError as e:
+        print(f"Key error: {e}")
+    except KeyError as e:
+        print(f"Type error: {e}")
+    except ValueError as e:
+        print(f"Value error: {e}")
+    
+    print("Fetcing Phone Number : ", fetching_number)
+    print("valid                : ", valid)
+    print("Truecaller Name      : ", truecallerName)
+    print("Leaked Name          : ", leaked_data1)
+    print("Leaked Name          : ", leaked_data2)
+    print("Country Prefix       : ", country_prefix)
+    print("Country Code         : ", country_code)
+    print("Local Format         : ", local_format)
+    print("International Format : ", international_format)
+    print("National Format      : ", national_format)
+    print("Line Type            : ", line_type)
+    print("Carrier              : ", carrier)
+    print("Location             : ", location)
+    print("WhatsApp Link        : ", whatsapp)
+    print("Telegram Link        : ", telegram)
     
 def convert_data(text_data):
     converter = DataConverter(text_data)

@@ -1,8 +1,8 @@
 ---
 
-# Phone Number Information Gatherer
+# Phone Number Information Gathering
 
-Welcome to the Phone Number Information Gatherer project! This tool aims to provide comprehensive information about a given mobile phone number. By inputting a phone number, users can access valuable insights such as the Truecaller name associated with the number, any leaked names, country prefix, country code, local, international, and national formats, line type (e.g., mobile), time zone, carrier information (e.g., Airtel), and country name. 
+Welcome to the Phone Number Information Gathering project! This tool aims to provide comprehensive information about a given mobile phone number. By inputting a phone number, users can access valuable insights such as the Truecaller name associated with the number, any leaked names, country prefix, country code, local, international, and national formats, line type (e.g., mobile), time zone, carrier information (e.g., Airtel), and country name. 
 
 ## Features
 
@@ -12,7 +12,7 @@ Welcome to the Phone Number Information Gatherer project! This tool aims to prov
 
 ## Usage
 
-To use the Phone Number Information Gatherer, simply input the desired phone number and wait for the tool to fetch the information. Here's a sample command and its output:
+To use the Phone Number Information Gathering, simply input the desired phone number and wait for the tool to fetch the information. Here's a sample command and its output:
 
 ```
 python mobileinfoga.py
@@ -39,7 +39,7 @@ Output:
 
 ## Installation
 
-To install the Phone Number Information Gatherer, simply clone the repository and install the required dependencies:
+To install the Phone Number Information Gathering, simply clone the repository and install the required dependencies:
 
 ```
 git clone https://github.com/Bineesh627/MobileInfoga.git
