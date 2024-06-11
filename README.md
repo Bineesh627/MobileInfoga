@@ -38,6 +38,9 @@ Carrier              :  Airtel
 Location             :  Kerala
 WhatsApp Link        :  https://wa.me/910123456789
 Telegram Link        :  https://t.me/+910123456789
+MCC                  : 404
+MNC                  : 45
+PLMN Identifier      : 18b2sc
 ```
 
 ## Installation
