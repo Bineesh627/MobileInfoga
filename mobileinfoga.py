@@ -5,6 +5,7 @@ import os
 import json
 import re
 import phonenumbers
+import mobile_codes
 from phonenumbers import carrier, geocoder, timezone
 
 class DataConverter:
@@ -225,6 +226,9 @@ def Formating_data(osintData, telegramData):
         whatsapp = telegramData.get('WhatsApp')
         telegram = telegramData.get('Telegram')
 
+        mcc, mnc = mncmcc(country_code, location, carrier)
+        plmn = EncodePLMN(mcc, mnc)
+
         print("Fetcing Phone Number : ", fetching_number)
         print("valid                : ", valid)
         print("Truecaller Name      : ", truecallerName)
@@ -241,6 +245,9 @@ def Formating_data(osintData, telegramData):
         print("Location             : ", location)
         print("WhatsApp Link        : ", whatsapp)
         print("Telegram Link        : ", telegram)
+        print("MCC                  : ", mcc)
+        print("MNC                  : ", mnc)
+        print("PLMN Identifier      : ", plmn)
 
     except json.JSONDecodeError as e:
         print(f"Key error: {e}")
@@ -248,6 +255,58 @@ def Formating_data(osintData, telegramData):
         print(f"Type error: {e}")
     except ValueError as e:
         print(f"Value error: {e}")
+
+def Reverse(string):
+    return string[::-1]
+
+def EncodePLMN(mcc, mnc):
+    if mcc is None or mnc is None:
+        raise ValueError("MCC and MNC must not be None")
+    
+    mcc_reversed = Reverse(mcc)
+    mnc_reversed = Reverse(mnc)
+
+    plmn = list('XXXXXX')
+    if len(mnc) == 2:
+        plmn[0] = mcc_reversed[1]
+        plmn[1] = mcc_reversed[2]
+        plmn[2] = "f"
+        plmn[3] = mcc_reversed[0]
+        plmn[4] = mnc_reversed[0]
+        plmn[5] = mnc_reversed[1]
+    else:
+        plmn[0] = mcc_reversed[1]
+        plmn[1] = mcc_reversed[2]
+        plmn[2] = mnc_reversed[0]
+        plmn[3] = mcc_reversed[0]
+        plmn[4] = mnc_reversed[1]
+        plmn[5] = mnc_reversed[2]
+    
+    encoded_plmn = ''.join(plmn)
+    return encoded_plmn
+
+def mncmcc(country_code, location, carrier):
+    country_code = country_code.strip().upper()
+    location = location.strip().lower()
+    carrier = carrier.strip().lower()
+
+    info = mobile_codes.alpha2(country_code)
+    if not info:
+        raise ValueError(f"No information found for country code: {country_code}")
+
+    mcc_list = info.mcc
+
+    mcc_number = None
+    mnc_number = None
+    for mcc in mcc_list:
+        operators = mobile_codes.operators(mcc)
+        for operator in operators:
+            if location in operator.operator.lower() and carrier in operator.brand.lower():
+                mcc_number = operator.mcc
+                mnc_number = operator.mnc
+                
+                return mcc_number, mnc_number
+    return None, None
 
 def convert_data(text_data):
     converter = DataConverter(text_data)
